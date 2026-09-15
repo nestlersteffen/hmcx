@@ -1,4 +1,4 @@
-# Contributing to hmcX
+# Contributing to hmcx
 
 Thank you for your interest! This package is maintained as a
 personal research project. I do not accept external pull requests.

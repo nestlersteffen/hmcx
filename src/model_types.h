@@ -1,12 +1,12 @@
-#ifndef MODEL_TYPES_H
-#define MODEL_TYPES_H
 
+# pragma once
+
+//// File Name: model_types.h
+//// File Version: 0.01
+
+// [[Rcpp::depends(RcppEigen)]]
 #include <RcppEigen.h>
 #include <functional>
-
-inline constexpr double DDM_PI = 3.14159265358979323846;
-
-// cpp - List type object:
 
 struct ModelResult {
 	double fn;
@@ -14,5 +14,3 @@ struct ModelResult {
 };
 
 using ModelFn = std::function<ModelResult(const Eigen::VectorXd&)>;
-
-#endif // MODEL_TYPES_H

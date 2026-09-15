@@ -47,7 +47,7 @@ nuts_chain_cpp <- function( model_ptr=NULL, args=NULL, verbose=NULL, inits=NULL,
 
 	step_fn <- nuts_step_fn_cpp( model_ptr=model_ptr, M=M, invM=invM, max_depth=max_depth_adapt )
     phase1  <- dual_averaging( theta0=inits, step_fn=step_fn, n_iter=badapt1, 
-    	epsilon_init=epsilon, verbose=verbose )
+    	epsilon_init=epsilon, args=args, verbose=verbose )
 
     # print( phase1$epsilon )
 
@@ -67,7 +67,7 @@ nuts_chain_cpp <- function( model_ptr=NULL, args=NULL, verbose=NULL, inits=NULL,
 
     step_fn <- nuts_step_fn_cpp( model_ptr=model_ptr, M=M, invM=invM, max_depth=max_depth_adapt )
 	phase3  <- dual_averaging( theta0=phase2$last_theta, step_fn=step_fn, n_iter=badapt1, 
-    	epsilon_init=phase1$epsilon, verbose=verbose )
+    	epsilon_init=phase1$epsilon, args=args, verbose=verbose )
 
 	epsilon <- phase3$epsilon
 	theta   <- phase3$theta

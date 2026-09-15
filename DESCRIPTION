@@ -1,4 +1,4 @@
-Package: hmcX
+Package: hmcx
 Type: Package
 Title: Collection of functions for HMC- and NUTS-sampling
 Version: 0.0.1

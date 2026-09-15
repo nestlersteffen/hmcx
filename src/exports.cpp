@@ -1,7 +1,9 @@
 
+//// File Name: exports.cpp
+//// File Version: 0.01
+
 // [[Rcpp::depends(RcppEigen)]]
 #include <RcppEigen.h>
-
 #include "model_types.h"
 #include "leapfrog.h"
 #include "helpers.h"
@@ -15,7 +17,7 @@
 
 // [[Rcpp::export]]
 
-Rcpp::XPtr<ModelFn> build_regression_model_xptr(
+SEXP build_regression_model_xptr(
     Eigen::VectorXd y, Eigen::MatrixXd X, double lambda2, double a, double b )
 {
     ModelFn* fn = new ModelFn( make_regression_model( y, X, lambda2, a, b ) );
@@ -24,7 +26,7 @@ Rcpp::XPtr<ModelFn> build_regression_model_xptr(
 
 // [[Rcpp::export]]
 
-Rcpp::XPtr<ModelFn> build_regression_model_cppad_xptr(
+SEXP build_regression_model_cppad_xptr(
     Eigen::VectorXd theta_init, // muss übergeben werden, um Tape zu initialisieren
     Eigen::VectorXd y, Eigen::MatrixXd X, double lambda2, double a, double b )
 {
@@ -38,7 +40,7 @@ Rcpp::XPtr<ModelFn> build_regression_model_cppad_xptr(
 
 // [[Rcpp::export]]
 
-Rcpp::XPtr<ModelFn> build_ddm4_cppad_xptr(
+SEXP build_ddm4_cppad_xptr(
     Eigen::VectorXd theta_init, // muss übergeben werden, um Tape zu initialisieren
     Eigen::VectorXd rts, Eigen::VectorXd xs, 
     Eigen::VectorXd muPrior_sp, Eigen::VectorXd sdPrior_sp,
@@ -55,9 +57,10 @@ Rcpp::XPtr<ModelFn> build_ddm4_cppad_xptr(
 
 // [[Rcpp::export]]
 
-Rcpp::List evaluate_model_ptr( Eigen::VectorXd theta, Rcpp::XPtr<ModelFn> model_ptr )
+Rcpp::List evaluate_model_ptr( Eigen::VectorXd theta, SEXP model_ptr )
 {
-    const ModelFn& model_fn = *model_ptr;
+    Rcpp::XPtr<ModelFn> ptr( model_ptr );
+    const ModelFn& model_fn = *ptr;
     ModelResult res = model_fn( theta );
 
     return Rcpp::List::create(
@@ -69,21 +72,24 @@ Rcpp::List evaluate_model_ptr( Eigen::VectorXd theta, Rcpp::XPtr<ModelFn> model_
 // [[Rcpp::export]]
 
 double find_reasonable_epsilon_cpp(
-    Eigen::VectorXd theta, Rcpp::XPtr<ModelFn> model_ptr, 
+    Eigen::VectorXd theta, SEXP model_ptr, 
     Eigen::VectorXd M, Eigen::VectorXd invM )
 {
-    const ModelFn& model_fn = *model_ptr;
+    Rcpp::XPtr<ModelFn> ptr( model_ptr );
+    const ModelFn& model_fn = *ptr;
     return find_reasonable_epsilon( theta, model_fn, M, invM );
 }
 
 // [[Rcpp::export]]
 
 Rcpp::List hmcstep_cpp( 
-    Eigen::VectorXd theta, Rcpp::XPtr<ModelFn> model_ptr, 
+    Eigen::VectorXd theta, SEXP model_ptr, 
     Eigen::VectorXd M, Eigen::VectorXd invM,
     double epsilon, int L )
 {
-    const ModelFn& model_fn = *model_ptr;
+    
+    Rcpp::XPtr<ModelFn> ptr( model_ptr );
+    const ModelFn& model_fn = *ptr;
     HmcState out = hmc_step( theta, model_fn, M, invM, epsilon, L );
  
     return Rcpp::List::create(
@@ -97,11 +103,13 @@ Rcpp::List hmcstep_cpp(
 // [[Rcpp::export]]
 
 Rcpp::List nutstep_cpp(
-    Eigen::VectorXd theta, Rcpp::XPtr<ModelFn> model_ptr,
+    Eigen::VectorXd theta, SEXP model_ptr,
     Eigen::VectorXd M, Eigen::VectorXd invM,
     double epsilon, int max_depth )
 {
-    const ModelFn& model_fn = *model_ptr;
+    
+    Rcpp::XPtr<ModelFn> ptr( model_ptr );
+    const ModelFn& model_fn = *ptr;
     NutsState out = nuts_step( theta, model_fn, M, invM, epsilon, max_depth );
  
     return Rcpp::List::create(

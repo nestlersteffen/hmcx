@@ -94,7 +94,7 @@ hmc_chain_r <- function( model_fn=NULL, args=NULL, verbose=NULL, inits=NULL, fin
 
 	step_fn <- hmc_step_fn_r( model_fn=model_fn, L=L, M=M, invM=invM )
     phase1  <- dual_averaging( theta0=inits, step_fn=step_fn, n_iter=badapt1, 
-    	epsilon_init=epsilon, verbose=verbose )
+    	epsilon_init=epsilon, args=args, verbose=verbose )
 
 	#-   warmup-phase 2: use tuned epsilon to tune M and invM
     if ( verbose ) print( " ==== start warmup II ==== ")
@@ -109,7 +109,7 @@ hmc_chain_r <- function( model_fn=NULL, args=NULL, verbose=NULL, inits=NULL, fin
 
     step_fn <- hmc_step_fn_r( model_fn=model_fn, L=L, M=M, invM=invM )
 	phase3  <- dual_averaging( theta0=phase2$last_theta, step_fn=step_fn, n_iter=badapt1, 
-    	epsilon_init=phase1$epsilon, verbose=verbose )
+    	epsilon_init=phase1$epsilon, args=args, verbose=verbose )
 
 	epsilon <- phase3$epsilon
 	theta   <- phase3$theta

@@ -1,4 +1,4 @@
-# hmcX
+# hmcx
 
 This package provides functions implementing a HMC-sampler and a NUTS-Sampler in R and C++. Define your own models in R and C++ with CppAD and then use hmc_chain (hmc_hain_cpp) or nuts_chain (nuts_chain_cpp) to obtain a single chain of the HMC or a NUTS-sampler. Both functions presume that your model is implemented in a function that provides the negative value of the log-posterior and the gradient of this function. 
 
@@ -8,7 +8,7 @@ Note that I implemented these functions to better understand STAN. You are free 
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("nestlersteffen/hmcX")
+devtools::install_github("nestlersteffen/hmcx")
 ```
 
 To update, simply rerun the installation command.
