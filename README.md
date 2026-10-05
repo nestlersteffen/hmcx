@@ -15,24 +15,50 @@ To update, simply rerun the installation command.
 
 ## Examples
 
-The package contains a regression example. The function that computes the negative log-posterior and the gradient is shipped with the package. Note that is a closure allowing the function to remember and access function arguments passed to it at initialization. 
+We use the nuts_chain function to estimate a logistic regression model. To this end, we define a closure that provides the value of the negative log-posterior and the gradient for a parameter vector theta (where theta contains the regressions coefficients). Here is the function: 
+
+``` r
+
+make_logregression <- function( Y=NULL, X=NULL, m=NULL, M=NULL )
+{
+    function( theta ) {
+        #- compute inverse of M:
+        invM <- base::solve(M)
+        #- compute linear predictor:
+        mu <- X%*%theta
+        pz <- plogis(mu)
+        #- compute posterior components:
+        ll <- sum( Y*log( pz ) + ( 1 - Y )*log( 1-pz ) ) 
+        lp <- -0.5*( t( theta - m )%*%invM%*%( theta - m ) )
+        #- compute gradient:
+        gr_ll <- t(X)%*%(Y - pz)
+        gr_lp <- invM%*%( theta - m )
+        #- make output:
+        res <- list( fn=-1*(ll + lp)[1,1], gr=-1*as.vector( gr_ll + gr_lp ) )
+        return( res )
+    }
+}
+
+```
+
+Note that we used a multivariate normal prior for the regression coefficients. We now generate some data, initiale the closure, and then use it to obtain a chain of NUTS-samples. 
 
 ``` r
 
 # make some data:
 
-set.seed(123)
-n <- 1000
-X <- mvtnorm::rmvnorm(n,rep(0,2),matrix(c(1,0.3,0.3,1),2,2))
-y <- 3 + X%*%c(0.4,0.2) + rnorm(n,0,sqrt(1.5))
+set.seed(1233)
+n  <- 500
+x  <- rnorm(n,0,1)
+y  <- rbinom(n, 1, plogis( 0.5 + 0.2*x ) )
 
-# initialize the closure (lambda2, a, and b are parameters of the priors)
+# initialize the closure (m and M are parameters of the prior)
 
-my_regression_model <- make_regression( y=y, X=cbind(1,X), lambda2=10, a=1, b=1)
+logreg <- make_logregression(Y=y,X=cbind(1,x),m=rep(0,2),M=diag(1,2))
 
-# some initial values for the chain (we sample the residual sd on the log-scale)
+# some initial values for the chain (for the two regression coefficients) 
 
-inits <- c( rep(0, 3), log( sd( y ) ) )
+inits <- c(0, 0)
 
 # define some arguments (see ?make_args):
 
@@ -40,11 +66,15 @@ args  <- make_args( biter=2000, burnin=1000 ) #biter = length of the chain
 
 # do NUTS-sampling:
 
-fit <- nuts_chain_r(model_fn=my_regression_model, args=args, verbose=TRUE, inits=inits, find_epsilon=TRUE )
+fit <- nuts_chain_r(model_fn=log_reg, args=args, verbose=TRUE, inits=inits )
 
-# fit is a list (I do not provide nice summary functions)
+# fit is a list, I use coda for the results
+
+summary( coda::mcmc( fit$parms ) )
 
 ```
+
+When you are interested in estimating the model with C++ or CppAD, just email me for the code or have a look at the regression.cpp, example.cpp, and exports.cpp file in the scr-folder. All three files contain the functions necessary to fit a linear regression model.
 
 ## Contributing
 

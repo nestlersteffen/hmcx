@@ -34,7 +34,7 @@ hmc_chain_cpp <- function( model_ptr=NULL, args=NULL, verbose=NULL, inits=NULL, 
 		find_reasonable_epsilon_cpp( theta=theta, model_ptr=model_ptr, M=M, invM=invM ) 
 		} else args$epsilon
 
-    print( epsilon )
+    # print( epsilon )
 
 	#- %%%%%%%%%%%%%%%%%%%%%
 	#-     warm-up phase
@@ -47,7 +47,7 @@ hmc_chain_cpp <- function( model_ptr=NULL, args=NULL, verbose=NULL, inits=NULL, 
     phase1  <- dual_averaging( theta0=inits, step_fn=step_fn, n_iter=badapt1, 
     	epsilon_init=epsilon, args=args, verbose=verbose )
 
-    print( phase1$epsilon )
+    # print( phase1$epsilon )
 
 	#-   warmup-phase 2: use tuned epsilon to tune M and invM
     if ( verbose ) print( " ==== start warmup II ==== ")
@@ -57,8 +57,8 @@ hmc_chain_cpp <- function( model_ptr=NULL, args=NULL, verbose=NULL, inits=NULL, 
 	M    <- phase2$M
 	invM <- phase2$invM
 
-    print( M )
-    print( invM )
+    # print( M )
+    # print( invM )
 	
 	#- warmup-phase 3: another tuning of epsilon with dual averaging and the new M
     if ( verbose ) print( " ==== start warmup III ==== ")
@@ -70,8 +70,8 @@ hmc_chain_cpp <- function( model_ptr=NULL, args=NULL, verbose=NULL, inits=NULL, 
 	epsilon <- phase3$epsilon
 	theta   <- phase3$theta
 
-    print( epsilon )
-    print( theta )
+    # print( epsilon )
+    # print( theta )
 
 	#- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     #-   now the true sampling phase

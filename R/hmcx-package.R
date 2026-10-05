@@ -5,6 +5,7 @@
 #'              with HMC or NUTS
 #'
 #' @keywords internal
+#' @useDynLib hmcx, .registration = TRUE
 #' @import Rcpp
 #' @import RcppEigen
 #' @import stats

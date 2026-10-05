@@ -6,7 +6,7 @@
 
 // [[Rcpp::depends(RcppEigen)]]
 #include <RcppEigen.h>
-#include "model_types.h"
+#include <hmcx/model_types.h>
 #include "leapfrog.h"
 
 double compute_H( const Eigen::VectorXd& theta, const Eigen::VectorXd& r,

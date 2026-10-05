@@ -6,7 +6,7 @@
 // [[Rcpp::depends(RcppEigen)]]
 #include <RcppEigen.h>
 #include <cppad/cppad.hpp>
-#include "model_types.h"
+#include <hmcx/model_types.h>
 
 inline constexpr double DDM_PI = 3.14159265358979323846;
 

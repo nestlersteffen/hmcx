@@ -9,7 +9,7 @@
 #include <cppad/cppad.hpp>
 #include <memory>
 #include <functional>
-#include "model_types.h"
+#include <hmcx/model_types.h>
 #include "regression.h"
 #include "ddm4.h"
 

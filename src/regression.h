@@ -6,7 +6,7 @@
 // [[Rcpp::depends(RcppEigen)]]
 #include <RcppEigen.h>
 #include <cppad/cppad.hpp>
-#include "model_types.h"
+#include <hmcx/model_types.h>
 
 ModelResult regression( const Eigen::VectorXd& theta, 
 	const Eigen::VectorXd& y, const Eigen::MatrixXd& X,
@@ -15,4 +15,4 @@ ModelResult regression( const Eigen::VectorXd& theta,
 CppAD::ADFun<double> regression_tape(
     const Eigen::VectorXd& theta, 
     const Eigen::VectorXd& y, const Eigen::MatrixXd& X, 
-    const double a, const double b, const double lambda2 );
+    const double lambda2, const double a, const double b );

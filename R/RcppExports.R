@@ -2,30 +2,34 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 build_regression_model_xptr <- function(y, X, lambda2, a, b) {
-    .Call('_hmcx_build_regression_model_xptr', PACKAGE = 'hmcx', y, X, lambda2, a, b)
+    .Call(`_hmcx_build_regression_model_xptr`, y, X, lambda2, a, b)
 }
 
 build_regression_model_cppad_xptr <- function(theta_init, y, X, lambda2, a, b) {
-    .Call('_hmcx_build_regression_model_cppad_xptr', PACKAGE = 'hmcx', theta_init, y, X, lambda2, a, b)
+    .Call(`_hmcx_build_regression_model_cppad_xptr`, theta_init, y, X, lambda2, a, b)
 }
 
 build_ddm4_cppad_xptr <- function(theta_init, rts, xs, muPrior_sp, sdPrior_sp, min_rt, s2, kmax) {
-    .Call('_hmcx_build_ddm4_cppad_xptr', PACKAGE = 'hmcx', theta_init, rts, xs, muPrior_sp, sdPrior_sp, min_rt, s2, kmax)
+    .Call(`_hmcx_build_ddm4_cppad_xptr`, theta_init, rts, xs, muPrior_sp, sdPrior_sp, min_rt, s2, kmax)
 }
 
+#' Evaluate a model pointer at theta for testing the model
+#' @param theta parameter vector
+#' @param model_ptr external pointer to a ModelFn
+#' @export
 evaluate_model_ptr <- function(theta, model_ptr) {
-    .Call('_hmcx_evaluate_model_ptr', PACKAGE = 'hmcx', theta, model_ptr)
+    .Call(`_hmcx_evaluate_model_ptr`, theta, model_ptr)
 }
 
 find_reasonable_epsilon_cpp <- function(theta, model_ptr, M, invM) {
-    .Call('_hmcx_find_reasonable_epsilon_cpp', PACKAGE = 'hmcx', theta, model_ptr, M, invM)
+    .Call(`_hmcx_find_reasonable_epsilon_cpp`, theta, model_ptr, M, invM)
 }
 
 hmcstep_cpp <- function(theta, model_ptr, M, invM, epsilon, L) {
-    .Call('_hmcx_hmcstep_cpp', PACKAGE = 'hmcx', theta, model_ptr, M, invM, epsilon, L)
+    .Call(`_hmcx_hmcstep_cpp`, theta, model_ptr, M, invM, epsilon, L)
 }
 
 nutstep_cpp <- function(theta, model_ptr, M, invM, epsilon, max_depth) {
-    .Call('_hmcx_nutstep_cpp', PACKAGE = 'hmcx', theta, model_ptr, M, invM, epsilon, max_depth)
+    .Call(`_hmcx_nutstep_cpp`, theta, model_ptr, M, invM, epsilon, max_depth)
 }
 

@@ -36,7 +36,7 @@ nuts_chain_cpp <- function( model_ptr=NULL, args=NULL, verbose=NULL, inits=NULL,
 		find_reasonable_epsilon_cpp( theta=theta, model_ptr=model_ptr, M=M, invM=invM )
 		} else args$epsilon
 
-    print( epsilon )
+    # print( epsilon )
 
 	#- %%%%%%%%%%%%%%%%%%%%%
 	#-     warm-up phase

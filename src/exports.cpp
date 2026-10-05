@@ -4,7 +4,7 @@
 
 // [[Rcpp::depends(RcppEigen)]]
 #include <RcppEigen.h>
-#include "model_types.h"
+#include <hmcx/model_types.h>
 #include "leapfrog.h"
 #include "helpers.h"
 #include "hmc.h"
@@ -55,8 +55,11 @@ SEXP build_ddm4_cppad_xptr(
 // ***   general part
 // **************************
 
+//' Evaluate a model pointer at theta for testing the model
+//' @param theta parameter vector
+//' @param model_ptr external pointer to a ModelFn
+//' @export
 // [[Rcpp::export]]
-
 Rcpp::List evaluate_model_ptr( Eigen::VectorXd theta, SEXP model_ptr )
 {
     Rcpp::XPtr<ModelFn> ptr( model_ptr );
